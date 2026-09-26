@@ -24,6 +24,7 @@ namespace BlazingPizzaApp
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Services.AddScoped<OrderState>();
             builder.Logging.AddDebug();
 #endif
 
