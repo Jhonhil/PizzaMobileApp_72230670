@@ -1,30 +1,101 @@
 ﻿@page "/"
 @using BlazingPizzaApp.Data
 @using BlazingPizzaApp.Model
+@using BlazingPizzaApp.Components.Shared
+@inject IPizzaSpecials PizzaSpecialsService
+@inject OrderState OrderState
 
-<h1>Blazing Pizzas</h1>
+<!-- Bagian Kiri: Daftar Pizza -->
+<div class="main">
+    <h1>Blazing Pizzas</h1>
+    <ul class="pizza-cards">
+        @foreach (var pizzaSpecial in pizzaSpecials)
+        {
+            <li @onclick="@(() => ShowConfigurePizzaDialog(pizzaSpecial))" style="background-image: url('@pizzaSpecial.ImageUrl')">
+                <div class="pizza-info">
+                    <span class="title">@pizzaSpecial.Name</span>
+                    @pizzaSpecial.Description
+                    <span class="price">@pizzaSpecial.GetFormattedBasePrice()</span>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
 
-<ul class="pizza-cards">
-    @foreach (var pizzaSpecial in pizzaSpecials)
+<!-- Bagian Kanan: Sidebar Pesanan -->
+<div class="sidebar">
+    @if (order.Pizzas.Any())
     {
-        <li  style="background-image: url('@pizzaSpecial.ImageUrl')">
-            <div class="pizza-info">
-                <span class="title">@pizzaSpecial.Name</span>
-                @pizzaSpecial.Description
-                <span class="price">@pizzaSpecial.GetFormattedBasePrice()</span>
-            </div>
-        </li>
+        <div class="order-contents">
+            <h2>Your order</h2>
+            @foreach (var configuredPizza in order.Pizzas)
+            {
+                <div class="cart-item">
+                    <div class="title">@(configuredPizza.Size)" @configuredPizza.Special.Name</div>
+                    <div class="item-price">
+                        @configuredPizza.GetFormattedTotalPrice()
+                    </div>
+                    <a @onclick="@(() => OrderState.RemoveConfiguredPizza(configuredPizza))" class="delete-item">x</a>
+                </div>
+            }
+        </div>
     }
-</ul>
+    else
+    {
+        <div class="empty-cart">Choose a pizza<br>to get started</div>
+    }
 
-@code{
-    private List<PizzaSpecial> pizzaSpecials = new List<PizzaSpecial>();
+    <div class="order-total @(order.Pizzas.Any() ? "" : "hidden")">
+        Total:
+        <span class="total-price">@order.GetFormattedTotalPrice()</span>
+        <a href="checkout" class="@(OrderState.Order.Pizzas.Count == 0 ? "btn btn-warning disabled" : "btn btn-warning")">
+            Order >
+        </a>
+    </div>
+</div>
 
-    [Inject]
-    private IPizzaSpecials PizzaSpecialsService { get; set; }
+<!-- Dialog Pop-Up -->
+@if (showingConfigureDialog)
+{
+    <ConfigurePizzaDialog Pizza="configuringPizza"
+                          OnCancel="CancelConfigurePizzaDialog"
+                          OnConfirm="ConfirmConfigurePizzaDialog" />
+}
+
+@code {
+    private List<PizzaSpecial> pizzaSpecials = new();
+    private Order order => OrderState.Order;
+    private Pizza configuringPizza;
+    private bool showingConfigureDialog;
 
     protected override async Task OnInitializedAsync()
     {
         pizzaSpecials = (await PizzaSpecialsService.GetPizzaSpecialsAsync()).ToList();
+    }
+
+    private void ShowConfigurePizzaDialog(PizzaSpecial special)
+    {
+        configuringPizza = new Pizza()
+        {
+            OrderId = order.OrderId,
+            Special = special,
+            SpecialId = special.Id,
+            Size = Pizza.DefaultSize,
+            Toppings = new List<PizzaTopping>()
+        };
+        showingConfigureDialog = true;
+    }
+
+    private void CancelConfigurePizzaDialog()
+    {
+        configuringPizza = null;
+        showingConfigureDialog = false;
+    }
+
+    private void ConfirmConfigurePizzaDialog()
+    {
+        order.Pizzas.Add(configuringPizza);
+        configuringPizza = null;
+        showingConfigureDialog = false;
     }
 }
