@@ -11,7 +11,7 @@
     <ul class="pizza-cards">
         @foreach (var pizzaSpecial in pizzaSpecials)
         {
-            <li @onclick="@(() => ShowConfigurePizzaDialog(pizzaSpecial))" style="background-image: url('@pizzaSpecial.ImageUrl')">
+            <li @onclick="@(() => OrderState.ShowConfigurePizzaDialog(pizzaSpecial))" style="background-image: url('@pizzaSpecial.ImageUrl')">
                 <div class="pizza-info">
                     <span class="title">@pizzaSpecial.Name</span>
                     @pizzaSpecial.Description
@@ -24,11 +24,11 @@
 
 <!-- Bagian Kanan: Sidebar Pesanan -->
 <div class="sidebar">
-    @if (order.Pizzas.Any())
+    @if (OrderState.Order.Pizzas.Any())
     {
         <div class="order-contents">
             <h2>Your order</h2>
-            @foreach (var configuredPizza in order.Pizzas)
+            @foreach (var configuredPizza in OrderState.Order.Pizzas)
             {
                 <div class="cart-item">
                     <div class="title">@(configuredPizza.Size)" @configuredPizza.Special.Name</div>
@@ -45,9 +45,9 @@
         <div class="empty-cart">Choose a pizza<br>to get started</div>
     }
 
-    <div class="order-total @(order.Pizzas.Any() ? "" : "hidden")">
+    <div class="order-total @(OrderState.Order.Pizzas.Any() ? "" : "hidden")">
         Total:
-        <span class="total-price">@order.GetFormattedTotalPrice()</span>
+        <span class="total-price">@OrderState.Order.GetFormattedTotalPrice()</span>
         <a href="checkout" class="@(OrderState.Order.Pizzas.Count == 0 ? "btn btn-warning disabled" : "btn btn-warning")">
             Order >
         </a>
@@ -55,47 +55,18 @@
 </div>
 
 <!-- Dialog Pop-Up -->
-@if (showingConfigureDialog)
+@if (OrderState.ShowingConfigureDialog)
 {
-    <ConfigurePizzaDialog Pizza="configuringPizza"
-                          OnCancel="CancelConfigurePizzaDialog"
-                          OnConfirm="ConfirmConfigurePizzaDialog" />
+    <ConfigurePizzaDialog Pizza="OrderState.ConfiguringPizza"
+                          OnCancel="OrderState.CancelConfigurePizzaDialog"
+                          OnConfirm="OrderState.ConfirmConfigurePizzaDialog" />
 }
 
 @code {
     private List<PizzaSpecial> pizzaSpecials = new();
-    private Order order => OrderState.Order;
-    private Pizza configuringPizza;
-    private bool showingConfigureDialog;
 
     protected override async Task OnInitializedAsync()
     {
         pizzaSpecials = (await PizzaSpecialsService.GetPizzaSpecialsAsync()).ToList();
-    }
-
-    private void ShowConfigurePizzaDialog(PizzaSpecial special)
-    {
-        configuringPizza = new Pizza()
-        {
-            OrderId = order.OrderId,
-            Special = special,
-            SpecialId = special.Id,
-            Size = Pizza.DefaultSize,
-            Toppings = new List<PizzaTopping>()
-        };
-        showingConfigureDialog = true;
-    }
-
-    private void CancelConfigurePizzaDialog()
-    {
-        configuringPizza = null;
-        showingConfigureDialog = false;
-    }
-
-    private void ConfirmConfigurePizzaDialog()
-    {
-        order.Pizzas.Add(configuringPizza);
-        configuringPizza = null;
-        showingConfigureDialog = false;
     }
 }

@@ -243,7 +243,7 @@ form {
 }
 
     .order-total.hidden {
-
+        /* Sengaja dibiarkan kosong agar bar merah 'Total' tetap muncul meski keranjang kosong */
     }
 
     .order-total .total-price {
@@ -684,7 +684,7 @@ input[type=range] {
     height: 6px;
     background-color: white;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2)
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
     .loading-bar::after {
@@ -759,7 +759,7 @@ input[type=range] {
     }
 }
 
-/* ===== RESPONSIVE KHUSUS MOBILE ===== */
+/* ===== RESPONSIVE KHUSUS TABLET/SEMI-MOBILE ===== */
 @media (max-width: 900px) {
     .content {
         flex-direction: column;
@@ -769,5 +769,53 @@ input[type=range] {
     .sidebar {
         width: 100%;
         min-height: 250px;
+    }
+}
+
+/* ===== RESPONSIVE KHUSUS LAYAR HP (MOBILE < 600px) ===== */
+@media (max-width: 600px) {
+    /* Menyesuaikan menu navigasi atas agar tidak kepanjangan */
+    .top-bar {
+        padding: 0 1rem;
+    }
+
+    .logo > img {
+        margin-right: 1rem;
+        width: 7rem;
+    }
+
+    .nav-tab {
+        padding: 0.3rem 1rem;
+    }
+
+    /* Mengubah daftar pizza menjadi 1 kolom penuh di HP */
+    .pizza-cards {
+        grid-template-columns: 1fr;
+        grid-gap: 1.5rem;
+    }
+
+    /* Mengecilkan lebar Pop-Up Dialog yang sebelumnya 700px */
+    .dialog {
+        width: 95% !important;
+        margin: 1rem auto;
+    }
+
+    .dialog-body {
+        padding: 0.5rem 1rem 1rem 0;
+    }
+
+        .dialog-body label {
+            width: auto;
+            margin: 0 0.5rem;
+        }
+
+    /* Menyesuaikan tombol di dalam pop-up */
+    .dialog-buttons {
+        padding: 0 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .dialog .price {
+        font-size: 1.2rem;
     }
 }
