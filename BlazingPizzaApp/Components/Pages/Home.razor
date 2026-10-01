@@ -10,18 +10,41 @@
     <!-- Bagian Kiri: Daftar Pizza -->
     <div class="main">
         <h1>Blazing Pizzas</h1>
-        <ul class="pizza-cards">
-            @foreach (var pizzaSpecial in pizzaSpecials)
-            {
-                <li @onclick="@(() => OrderState.ShowConfigurePizzaDialog(pizzaSpecial))" style="background-image: url('@pizzaSpecial.ImageUrl')">
-                    <div class="pizza-info">
-                        <span class="title">@pizzaSpecial.Name</span>
-                        @pizzaSpecial.Description
-                        <span class="price">@pizzaSpecial.GetFormattedBasePrice()</span>
-                    </div>
-                </li>
-            }
-        </ul>
+
+        @if (isLoading)
+        {
+            <div class="loading-message">
+                <p>Loading pizzas...</p>
+            </div>
+        }
+        else if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="error-message">
+                <p>⚠️ Error: @errorMessage</p>
+                <button @onclick="RetryLoadPizzas" class="btn btn-primary">Retry</button>
+            </div>
+        }
+        else if (pizzaSpecials != null && pizzaSpecials.Count > 0)
+        {
+            <ul class="pizza-cards">
+                @foreach (var pizzaSpecial in pizzaSpecials)
+                {
+                    <li @onclick="@(() => OrderState.ShowConfigurePizzaDialog(pizzaSpecial))" style="background-image: url('@pizzaSpecial.ImageUrl')">
+                        <div class="pizza-info">
+                            <span class="title">@pizzaSpecial.Name</span>
+                            @pizzaSpecial.Description
+                            <span class="price">@pizzaSpecial.GetFormattedBasePrice()</span>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <div class="empty-message">
+                <p>No pizzas available</p>
+            </div>
+        }
     </div>
 
     <!-- Bagian Kanan: Sidebar Pesanan -->
@@ -67,9 +90,39 @@
 
 @code {
     private List<PizzaSpecial> pizzaSpecials = new();
+    private bool isLoading = true;
+    private string errorMessage = "";
 
     protected override async Task OnInitializedAsync()
     {
-        pizzaSpecials = (await PizzaSpecialsService.GetPizzaSpecialsAsync()).ToList();
+        await LoadPizzas();
+    }
+
+    private async Task LoadPizzas()
+    {
+        try
+        {
+            isLoading = true;
+            errorMessage = "";
+            pizzaSpecials = (await PizzaSpecialsService.GetPizzaSpecialsAsync()).ToList();
+
+            if (pizzaSpecials.Count == 0)
+            {
+                errorMessage = "No pizzas found. Make sure the API server is running.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Failed to load pizzas: {ex.Message}. Make sure the API is running at https://localhost:7219/";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task RetryLoadPizzas()
+    {
+        await LoadPizzas();
     }
 }
