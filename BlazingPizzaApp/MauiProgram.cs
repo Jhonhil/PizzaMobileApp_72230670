@@ -17,6 +17,8 @@ namespace BlazingPizzaApp
 
             builder.Services.AddMauiBlazorWebView();
 
+            builder.Services.AddScoped<OrderState>();
+
             builder.Services.AddHttpClient<IPizzaSpecials, PizzaSpecialsServices>(client =>
             {
                 client.BaseAddress = new Uri("https://localhost:7219/");
@@ -24,7 +26,6 @@ namespace BlazingPizzaApp
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
-            builder.Services.AddScoped<OrderState>();
             builder.Logging.AddDebug();
 #endif
 
