@@ -9,6 +9,15 @@ body {
     flex-direction: column;
     font-family: 'quicksand';
     overflow-y: hidden;
+    margin: 0;
+}
+
+/* ===== RESPONSIVE CONTAINER ===== */
+.content-wrapper {
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 5rem);
+    width: 100%;
 }
 
 form {
@@ -57,7 +66,13 @@ form {
     overflow-y: auto;
     background: linear-gradient(rgba(0,0,0,0) 40%, rgba(0,0,0,0.4) 80%);
     padding: 1.5rem !important;
+    width: 100%;
 }
+
+    .main h1 {
+        margin-top: 0;
+        font-size: 2.5rem;
+    }
 
 .nav-tab {
     margin: 0;
@@ -142,20 +157,22 @@ form {
 
 .pizza-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 20rem);
-    grid-gap: 2rem;
-    justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    grid-gap: 1.5rem;
     padding-left: 0;
+    list-style: none;
 }
 
     .pizza-cards > li {
         height: 10rem;
         position: relative;
         background-size: cover;
+        background-position: center;
         border-radius: 0.5rem;
         list-style-type: none;
         box-shadow: 0 3px 4px rgba(0,0,0,0.4);
         transition: 0.1s ease-out;
+        cursor: pointer;
     }
 
         .pizza-cards > li:hover {
@@ -212,7 +229,17 @@ form {
     display: flex;
     flex-direction: column;
     color: white;
+    flex-shrink: 0;
 }
+
+    .sidebar h2 {
+        color: #fff2cc;
+        font-size: 1.3rem;
+        font-weight: 300;
+        margin: 0 0 1rem 0;
+        font-family: 'Bahnschrift', Arial, Helvetica, sans-serif;
+        text-transform: uppercase;
+    }
 
 .order-contents {
     overflow-y: auto;
@@ -772,50 +799,259 @@ input[type=range] {
     }
 }
 
+/* ===== RESPONSIVE UNTUK TABLET & LAYAR KECIL (600px - 1024px) ===== */
+@media (max-width: 1024px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        border-top: 2px solid #555;
+        max-height: 40vh;
+    }
+
+    .main {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .pizza-cards {
+        grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+        grid-gap: 1rem;
+    }
+}
+
 /* ===== RESPONSIVE KHUSUS LAYAR HP (MOBILE < 600px) ===== */
 @media (max-width: 600px) {
     /* Menyesuaikan menu navigasi atas agar tidak kepanjangan */
     .top-bar {
-        padding: 0 1rem;
+        padding: 0 0.5rem;
+        height: 4rem;
     }
 
     .logo > img {
-        margin-right: 1rem;
-        width: 7rem;
+        margin-right: 0.5rem;
+        width: 5rem;
     }
 
     .nav-tab {
-        padding: 0.3rem 1rem;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.7rem;
     }
 
-    /* Mengubah daftar pizza menjadi 1 kolom penuh di HP */
+    .nav-tab img {
+        height: 1.5rem;
+        margin-bottom: 0.1rem;
+    }
+
+    .user-info img {
+        margin-right: 0.3rem;
+        width: 2rem;
+    }
+
+    .user-info .username {
+        font-size: 0.8rem;
+    }
+
+    /* Layout untuk mobile - sidebar di bawah */
+    .content-wrapper {
+        flex-direction: column;
+        height: calc(100vh - 4rem);
+    }
+
+    .main {
+        flex: 1;
+        padding: 1rem !important;
+        overflow-y: auto;
+    }
+
+    .main h1 {
+        font-size: 1.5rem;
+        margin: 0.5rem 0;
+    }
+
+    /* Daftar pizza menjadi 1-2 kolom di HP */
     .pizza-cards {
-        grid-template-columns: 1fr;
-        grid-gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+        grid-gap: 0.8rem;
+        padding: 0;
     }
 
-    /* Mengecilkan lebar Pop-Up Dialog yang sebelumnya 700px */
-    .dialog {
-        width: 95% !important;
-        margin: 1rem auto;
+    .pizza-cards > li {
+        height: 8rem;
     }
 
-    .dialog-body {
-        padding: 0.5rem 1rem 1rem 0;
+    .pizza-info {
+        padding: 0.5rem;
     }
 
-        .dialog-body label {
-            width: auto;
-            margin: 0 0.5rem;
-        }
+    .pizza-info .title {
+        font-size: 1rem;
+    }
 
-    /* Menyesuaikan tombol di dalam pop-up */
-    .dialog-buttons {
-        padding: 0 0.5rem;
+    .pizza-info .price {
+        font-size: 1.2rem;
+        right: 0.5rem;
+        bottom: 0.2rem;
+    }
+
+    /* Sidebar responsif untuk mobile */
+    .sidebar {
+        width: 100%;
+        height: auto;
+        border-top: 2px solid #555;
+        flex-shrink: 0;
+    }
+
+    .order-contents {
+        padding: 1rem 1rem 0.5rem 1rem;
+        max-height: 30vh;
+        overflow-y: auto;
+    }
+
+    .order-contents h2 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .cart-item {
+        padding: 0.5rem;
+        margin-top: 0.5rem;
         font-size: 0.9rem;
     }
 
-    .dialog .price {
+    .cart-item .title {
+        font-size: 0.9rem;
+    }
+
+    .cart-item .item-price {
+        font-size: 0.85rem;
+    }
+
+    .delete-item {
         font-size: 1.2rem;
+        right: 0.5rem;
+    }
+
+    .empty-cart {
+        padding: 1rem 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .order-total {
+        height: 3.5rem;
+        padding: 0 1rem;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .order-total .total-price {
+        font-size: 1.3rem;
+    }
+
+    .btn {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    /* Dialog Pop-Up responsif */
+    .dialog-container {
+        padding: 1rem;
+    }
+
+    .dialog {
+        width: 95% !important;
+        padding: 1.5rem;
+        margin: auto;
+    }
+
+    .dialog-title h2 {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .dialog-body {
+        padding: 1rem 0;
+    }
+
+    .dialog-body input[type="range"] {
+        margin: 0.5rem 0;
+    }
+
+    .size-label {
+        font-size: 0.9rem;
+        margin-left: 0.5rem;
+    }
+
+    .dialog-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding-top: 1rem;
+    }
+
+    .dialog-buttons button {
+        width: 100%;
+        padding: 0.8rem;
+        font-size: 1rem;
+    }
+
+    .dialog-buttons .mr-auto {
+        margin-right: 0 !important;
+    }
+
+    .dialog-buttons .mr-center {
+        margin: 0 auto !important;
+        width: 100%;
+        text-align: center;
+    }
+
+    .dialog-buttons .ml-auto {
+        margin-left: 0 !important;
+    }
+
+    .dialog .price {
+        font-size: 1.3rem;
+    }
+}
+
+/* ===== EXTRA SMALL DEVICES (< 380px) ===== */
+@media (max-width: 380px) {
+    .top-bar {
+        height: 3.5rem;
+    }
+
+    .logo > img {
+        width: 4rem;
+    }
+
+    .pizza-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .main h1 {
+        font-size: 1.2rem;
+    }
+
+    .nav-tab {
+        font-size: 0.6rem;
+        padding: 0.2rem 0.3rem;
+    }
+
+    .order-total {
+        flex-direction: column;
+        height: auto;
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .order-total .total-price {
+        display: block;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
     }
 }

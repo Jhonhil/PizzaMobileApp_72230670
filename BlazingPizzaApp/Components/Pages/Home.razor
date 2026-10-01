@@ -5,52 +5,55 @@
 @inject IPizzaSpecials PizzaSpecialsService
 @inject OrderState OrderState
 
-<!-- Bagian Kiri: Daftar Pizza -->
-<div class="main">
-    <h1>Blazing Pizzas</h1>
-    <ul class="pizza-cards">
-        @foreach (var pizzaSpecial in pizzaSpecials)
-        {
-            <li @onclick="@(() => OrderState.ShowConfigurePizzaDialog(pizzaSpecial))" style="background-image: url('@pizzaSpecial.ImageUrl')">
-                <div class="pizza-info">
-                    <span class="title">@pizzaSpecial.Name</span>
-                    @pizzaSpecial.Description
-                    <span class="price">@pizzaSpecial.GetFormattedBasePrice()</span>
-                </div>
-            </li>
-        }
-    </ul>
-</div>
-
-<!-- Bagian Kanan: Sidebar Pesanan -->
-<div class="sidebar">
-    @if (OrderState.Order.Pizzas.Any())
-    {
-        <div class="order-contents">
-            <h2>Your order</h2>
-            @foreach (var configuredPizza in OrderState.Order.Pizzas)
+<!-- Container Utama dengan Flex untuk Responsive -->
+<div class="content-wrapper">
+    <!-- Bagian Kiri: Daftar Pizza -->
+    <div class="main">
+        <h1>Blazing Pizzas</h1>
+        <ul class="pizza-cards">
+            @foreach (var pizzaSpecial in pizzaSpecials)
             {
-                <div class="cart-item">
-                    <div class="title">@(configuredPizza.Size)" @configuredPizza.Special.Name</div>
-                    <div class="item-price">
-                        @configuredPizza.GetFormattedTotalPrice()
+                <li @onclick="@(() => OrderState.ShowConfigurePizzaDialog(pizzaSpecial))" style="background-image: url('@pizzaSpecial.ImageUrl')">
+                    <div class="pizza-info">
+                        <span class="title">@pizzaSpecial.Name</span>
+                        @pizzaSpecial.Description
+                        <span class="price">@pizzaSpecial.GetFormattedBasePrice()</span>
                     </div>
-                    <a @onclick="@(() => OrderState.RemoveConfiguredPizza(configuredPizza))" class="delete-item">x</a>
-                </div>
+                </li>
             }
-        </div>
-    }
-    else
-    {
-        <div class="empty-cart">Choose a pizza<br>to get started</div>
-    }
+        </ul>
+    </div>
 
-    <div class="order-total @(OrderState.Order.Pizzas.Any() ? "" : "hidden")">
-        Total:
-        <span class="total-price">@OrderState.Order.GetFormattedTotalPrice()</span>
-        <a href="checkout" class="@(OrderState.Order.Pizzas.Count == 0 ? "btn btn-warning disabled" : "btn btn-warning")">
-            Order >
-        </a>
+    <!-- Bagian Kanan: Sidebar Pesanan -->
+    <div class="sidebar">
+        @if (OrderState.Order.Pizzas.Any())
+        {
+            <div class="order-contents">
+                <h2>Your order</h2>
+                @foreach (var configuredPizza in OrderState.Order.Pizzas)
+                {
+                    <div class="cart-item">
+                        <div class="title">@(configuredPizza.Size)" @configuredPizza.Special.Name</div>
+                        <div class="item-price">
+                            @configuredPizza.GetFormattedTotalPrice()
+                        </div>
+                        <a @onclick="@(() => OrderState.RemoveConfiguredPizza(configuredPizza))" class="delete-item">x</a>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-cart">Choose a pizza<br>to get started</div>
+        }
+
+        <div class="order-total @(OrderState.Order.Pizzas.Any() ? "" : "hidden")">
+            Total:
+            <span class="total-price">@OrderState.Order.GetFormattedTotalPrice()</span>
+            <a href="checkout" class="@(OrderState.Order.Pizzas.Count == 0 ? "btn btn-warning disabled" : "btn btn-warning")">
+                Order >
+            </a>
+        </div>
     </div>
 </div>
 
