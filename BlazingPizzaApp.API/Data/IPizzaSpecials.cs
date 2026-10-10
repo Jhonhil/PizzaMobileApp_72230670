@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazingPizzaApp.API.Models;
+using BlazingPizzaApp.API.Models; // Menggunakan model Backend
 
 namespace BlazingPizzaApp.API.Data
 {

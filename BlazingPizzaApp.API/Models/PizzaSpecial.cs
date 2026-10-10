@@ -1,4 +1,4 @@
-﻿namespace BlazingPizzaApp.Model
+﻿namespace BlazingPizzaApp.API.Models
 {
     public class PizzaSpecial
     {

@@ -1,25 +1,25 @@
 ﻿using BlazingPizzaApp.API.Data;
-using Microsoft.AspNetCore.Http;
+using BlazingPizzaApp.API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazingPizzaApp.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("specials")]
     [ApiController]
-    public class SpecialsController : ControllerBase
+    public class SpecialsController : Controller
     {
-        private readonly IPizzaSpecials _pizzaSpecials;
+        private readonly PizzaStoreContext _db;
 
-        public SpecialsController(IPizzaSpecials pizzaSpecials)
+        public SpecialsController(PizzaStoreContext db)
         {
-            _pizzaSpecials = pizzaSpecials;
+            _db = db;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<List<PizzaSpecial>>> GetSpecials()
         {
-            var specials = await _pizzaSpecials.GetPizzaSpecialsAsync();
-            return Ok(specials);
+            return (await _db.Specials.ToListAsync()).OrderByDescending(s => s.BasePrice).ToList();
         }
     }
 }

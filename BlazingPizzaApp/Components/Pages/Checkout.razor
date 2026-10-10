@@ -42,11 +42,10 @@
     {
         isSubmitting = true;
 
-        // Gunakan path relatif "orders" (akan digabung otomatis dengan BaseAddress dari HttpClient)
         var response = await HttpClient.PostAsJsonAsync("orders", OrderState.Order);
         var newOrderId = await response.Content.ReadFromJsonAsync<int>();
 
         OrderState.ResetOrder();
-        NavigationManager.NavigateTo("myorders");
+        NavigationManager.NavigateTo($"myorders/{newOrderId}");
     }
 }

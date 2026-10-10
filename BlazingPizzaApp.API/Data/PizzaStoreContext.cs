@@ -1,13 +1,12 @@
 ﻿using BlazingPizzaApp.API.Models;
+using BlazingPizzaApp.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazingPizzaApp.API.Data
 {
     public class PizzaStoreContext : DbContext
     {
-        public PizzaStoreContext(DbContextOptions<PizzaStoreContext> options) : base(options)
-        {
-        }
+        public PizzaStoreContext(DbContextOptions<PizzaStoreContext> options) : base(options) { }
 
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<Pizza> Pizzas { get; set; } = null!;
@@ -20,10 +19,8 @@ namespace BlazingPizzaApp.API.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Memaksa nama tabel menjadi 'PizzaSpecials' secara eksplisit
             modelBuilder.Entity<PizzaSpecial>().ToTable("PizzaSpecials");
 
-            // Kunci utama gabungan (Composite Primary Key)
             modelBuilder.Entity<PizzaTopping>()
                 .HasKey(pst => new { pst.PizzaId, pst.ToppingId });
 
