@@ -1,9 +1,11 @@
-﻿using BlazingPizzaApp.API.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using BlazingPizzaApp.API.Models;
 
 namespace BlazingPizzaApp.API.Data
 {
     public interface IPizzaSpecials
     {
-        Task<IEnumerable<PizzaSpecial>> GetPizzaSpecialsAsync();
+        Task<List<PizzaSpecial>> GetPizzaSpecialsAsync();
     }
 }

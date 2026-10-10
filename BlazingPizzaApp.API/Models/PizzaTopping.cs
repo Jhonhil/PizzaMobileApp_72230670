@@ -1,4 +1,6 @@
-﻿namespace BlazingPizzaApp.Model
+﻿using BlazingPizzaApp.API.Models;
+
+namespace BlazingPizzaApp.Model
 {
     public class PizzaTopping
     {

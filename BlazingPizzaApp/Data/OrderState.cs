@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using BlazingPizzaApp.Model;
 
 namespace BlazingPizzaApp.Data
@@ -8,7 +7,7 @@ namespace BlazingPizzaApp.Data
     public class OrderState
     {
         public bool ShowingConfigureDialog { get; private set; }
-        public Pizza ConfiguringPizza { get; private set; }
+        public Pizza? ConfiguringPizza { get; private set; }
         public Order Order { get; private set; } = new Order();
 
         public void ShowConfigurePizzaDialog(PizzaSpecial special)
@@ -27,14 +26,16 @@ namespace BlazingPizzaApp.Data
         public void CancelConfigurePizzaDialog()
         {
             ConfiguringPizza = null;
-
             ShowingConfigureDialog = false;
         }
 
         public void ConfirmConfigurePizzaDialog()
         {
-            Order.Pizzas.Add(ConfiguringPizza);
-            ConfiguringPizza = null;
+            if (ConfiguringPizza != null)
+            {
+                Order.Pizzas.Add(ConfiguringPizza);
+                ConfiguringPizza = null;
+            }
 
             ShowingConfigureDialog = false;
         }
@@ -42,6 +43,11 @@ namespace BlazingPizzaApp.Data
         public void RemoveConfiguredPizza(Pizza pizza)
         {
             Order.Pizzas.Remove(pizza);
+        }
+
+        public void ResetOrder()
+        {
+            Order = new Order();
         }
     }
 }

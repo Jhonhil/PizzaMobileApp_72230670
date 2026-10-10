@@ -21,14 +21,16 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 app.MapControllers();
 
+// Inisialisasi Database dan SeedData
 var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 using (var scope = scopeFactory.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<PizzaStoreContext>();
-    if (db.Database.EnsureCreated())
-    {
-        SeedData.Initialize(db);
-    }
+
+    // Hapus database lama jika ada, lalu buat baru dengan skema tabel lengkap dan seed data
+    db.Database.EnsureDeleted();
+    db.Database.EnsureCreated();
+    SeedData.Initialize(db);
 }
 
 app.Run();

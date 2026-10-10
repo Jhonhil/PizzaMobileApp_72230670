@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using BlazingPizzaApp.API.Models;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace BlazingPizzaApp.Model
+namespace BlazingPizzaApp.Model // Gunakan BlazingPizzaApp.API.Models untuk proyek API
 {
     public class Pizza
     {

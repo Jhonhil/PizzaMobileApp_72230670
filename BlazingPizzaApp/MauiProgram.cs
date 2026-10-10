@@ -17,6 +17,11 @@ namespace BlazingPizzaApp
 
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddScoped<OrderState>();
+            // Tambahkan atau ganti pendaftaran HttpClient di MauiProgram.cs
+            builder.Services.AddScoped(sp => new HttpClient
+            {
+                BaseAddress = new Uri("http://localhost:7219/") // <--- Cek & sesuaikan port ini dengan port BlazingPizzaApp.API Anda
+            });
 
             builder.Services.AddHttpClient<IPizzaSpecials, PizzaSpecialsServices>(client =>
             {
