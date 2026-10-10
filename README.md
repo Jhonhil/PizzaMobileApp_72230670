@@ -8,7 +8,7 @@ Katalog Pizza Interaktif: Menampilkan daftar pizza special dengan harga dan desk
 
 Kustomisasi & Pemesanan: Mengatur ukuran pizza dan pilihan topping secara interaktif.
 
-Manajemen Pesanan & Pelacakan: Halaman Checkout, riwayat pesanan (My Orders), dan pelacakan status detail pesanan secara lansung.
+Manajemen Pesanan & Pelacakan: Halaman Checkout, riwayat pesanan (My Orders), dan pelacakan status detail pesanan secara langsung.
 
 Global Layout & Navigation: Penggunaan komponen MainLayout.razor terpusat untuk navigasi dan footer hak cipta yang fleksibel.
 
@@ -41,21 +41,18 @@ SonarCloud / SonarQube Code Analysis
 📁 Struktur Proyek
 
 PizzaMobileApp_72230670/
-├── BlazingPizzaApp/             # Frontend Application (.NET MAUI Blazor)
+├── BlazingPizzaApp/          # Frontend Application (.NET MAUI Blazor)
 │   ├── Components/
-│   │   ├── Layout/              # MainLayout & NavMenu
-│   │   ├── Pages/               # Home, Checkout, MyOrders, OrderDetail, NotFound
-│   │   └── Shared/              # Dialogs & Shared UI Components
-│   ├── Data/                    # App State Management & Services
-│   └── Model/                   # Client-side Data Models
-│
-├── BlazingPizzaApp.API/         # Backend Web API (ASP.NET Core)
-│   ├── Controllers/             # OrdersController, SpecialsController
-│   ├── Data/                    # DbContext & Seed Data
-│   ├── Models/                  # Server-side Entity Models
-│   └── pizza.db                 # SQLite Database File
-│
-└── BlazingPizzaApp.slnx         # Solution File
+│   │   ├── Layout/           # MainLayout & NavMenu
+│   │   ├── Pages/            # Home, Checkout, MyOrders, OrderDetail, NotFound
+│   │   └── Shared/           # Dialogs & Shared UI Components
+│   └── Data/                 # App State Management & Services
+├── BlazingPizzaApp.API/      # Backend Web API (ASP.NET Core)
+│   ├── Controllers/          # OrdersController, SpecialsController
+│   ├── Data/                 # DbContext & Seed Data
+│   └── Models/               # Server-side Entity Models
+├── pizza.db                  # SQLite Database File
+└── BlazingPizzaApp.slnx      # Solution File
 
 
 💻 Cara Jalankan Proyek
@@ -71,10 +68,6 @@ Visual Studio 2022 / 2026 (dengan workload .NET MAUI & Web Development).
 Buka terminal dan masuk ke folder API:
 
 cd BlazingPizzaApp.API
-
-
-Jalankan server API:
-
 dotnet run
 
 
@@ -82,13 +75,9 @@ API akan berjalan di alamat http://localhost:5000 / https://localhost:7219.
 
 3. Jalankan Aplikasi Client (MAUI Blazor)
 
-Buka terminal baru dan masuk ke folder Frontend:
+Buka terminal baru dan masuk ke folder frontend:
 
 cd BlazingPizzaApp
-
-
-Jalankan aplikasi MAUI:
-
 dotnet build
 dotnet run
 
