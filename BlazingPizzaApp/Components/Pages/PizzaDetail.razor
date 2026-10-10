@@ -1,0 +1,58 @@
+﻿@page "/pizza/{PizzaName}"
+@page "/pizza"
+@using System.Web
+@inject NavigationManager NavManager
+
+<div class="p-4 bg-white rounded shadow-sm m-3">
+    <h2>Detail Pizza</h2>
+
+    @if (!string.IsNullOrEmpty(PizzaName))
+    {
+        <p class="fs-5">Pizza yang dipilih: <strong>@PizzaName</strong></p>
+    }
+    else
+    {
+        <p class="fs-5 text-muted">Belum ada nama pizza yang ditentukan di URL.</p>
+    }
+
+    @if (!string.IsNullOrEmpty(ToppingName))
+    {
+        <div class="alert alert-success mt-3">
+            Topping Tambahan (dari Query String): <strong>@ToppingName</strong>
+        </div>
+    }
+
+    <div class="mt-4">
+        <button class="btn btn-danger me-2" @onclick="GoToOrders">
+            Lihat Pesanan Saya
+        </button>
+        <button class="btn btn-secondary" @onclick="GoHome">
+            Kembali ke Beranda
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? PizzaName { get; set; }
+
+    private string? ToppingName { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+        // Mengurai query string menggunakan HttpUtility bawaan .NET
+        var queryParams = HttpUtility.ParseQueryString(uri.Query);
+        ToppingName = queryParams["extratopping"];
+    }
+
+    private void GoToOrders()
+    {
+        NavManager.NavigateTo("myorders");
+    }
+
+    private void GoHome()
+    {
+        NavManager.NavigateTo("");
+    }
+}

@@ -4,14 +4,21 @@
     <a class="logo" href="">
         <img src="img/logo.svg" />
     </a>
+
     <NavLink href="" class="nav-tab" Match="NavLinkMatch.All">
         <img src="img/pizza-slice.svg" />
         <div>Get Pizza</div>
     </NavLink>
-    <!-- Menu My Orders dikembalikan -->
+
     <NavLink href="myorders" class="nav-tab" Match="NavLinkMatch.Prefix">
         <img src="img/bike.svg" />
         <div>My Orders</div>
+    </NavLink>
+
+    <!-- Tautkan menu baru untuk menguji Parameter Rute & Query String -->
+    <NavLink href="pizza/Margherita?extratopping=Pineapple" class="nav-tab">
+        <img src="img/pizza-slice.svg" />
+        <div>Detail Pizza</div>
     </NavLink>
 </div>
 

@@ -4,6 +4,7 @@
 @using BlazingPizzaApp.Components.Shared
 @inject IPizzaSpecials PizzaSpecialsService
 @inject OrderState OrderState
+@inject NavigationManager NavManager
 
 <!-- Container Utama dengan Flex untuk Responsive -->
 <div class="content-wrapper">
@@ -124,5 +125,10 @@
     private async Task RetryLoadPizzas()
     {
         await LoadPizzas();
+    }
+
+    private void ViewPizzaDetail(string pizzaName)
+    {
+        NavManager.NavigateTo($"pizza/{pizzaName}?extratopping=ExtraCheese");
     }
 }
