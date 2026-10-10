@@ -16,12 +16,15 @@ namespace BlazingPizzaApp
                 });
 
             builder.Services.AddMauiBlazorWebView();
-
             builder.Services.AddScoped<OrderState>();
 
             builder.Services.AddHttpClient<IPizzaSpecials, PizzaSpecialsServices>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7219/");
+                var baseUrl = DeviceInfo.Platform == DevicePlatform.Android
+                    ? "http://10.0.2.2:7219/"
+                    : "http://localhost:7219/";
+
+                client.BaseAddress = new Uri(baseUrl);
             });
 
 #if DEBUG

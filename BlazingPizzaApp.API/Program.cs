@@ -3,27 +3,22 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
 builder.Services.AddScoped<IPizzaSpecials, PizzaSpecialsDAL>();
 builder.Services.AddSqlite<PizzaStoreContext>("Data Source=pizza.db");
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+// PERBAIKAN: Matikan pemaksaan HTTPS agar koneksi HTTP di port 7219 tidak terputus
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
 app.MapControllers();
 
 var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();

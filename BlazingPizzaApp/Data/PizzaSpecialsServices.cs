@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
-using System.Text;
 
 namespace BlazingPizzaApp.Data
 {
@@ -19,7 +18,7 @@ namespace BlazingPizzaApp.Data
         {
             try
             {
-                // Try the primary endpoint first
+                // Disesuaikan ke "api/specials" sesuai rute controller API
                 var specials = await _httpClient.GetFromJsonAsync<List<PizzaSpecial>>("api/specials");
 
                 if (specials == null || specials.Count == 0)
@@ -35,8 +34,6 @@ namespace BlazingPizzaApp.Data
             {
                 System.Diagnostics.Debug.WriteLine($"Error retrieving pizza specials: {ex.Message}");
                 System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-
-                // Return empty list instead of throwing to prevent crashes
                 return new List<PizzaSpecial>();
             }
         }
