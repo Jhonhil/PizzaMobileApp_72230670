@@ -13,7 +13,7 @@ Aplikasi pemesanan pizza interaktif berbasis .NET MAUI Blazor Hybrid dengan back
 ## 🛠️ Teknologi yang Digunakan
 
 ### Frontend
-- .NET MAUI Blazor Hybrid (.NET 8/9)
+- .NET MAUI Blazor Hybrid (.NET 10.0)
 - C#
 - Razor Components
 - CSS / Bootstrap Custom Styling
