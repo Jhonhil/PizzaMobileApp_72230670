@@ -1,4 +1,5 @@
 @page "/checkout"
+@implements IDisposable
 @using BlazingPizzaApp.Model
 @using BlazingPizzaApp.Data
 @using BlazingPizzaApp.Components.Shared
@@ -7,7 +8,9 @@
 @inject NavigationManager NavigationManager
 
 <div class="main">
-    <EditForm Model="Order.DeliveryAddress" OnSubmit="CheckSubmission">
+    <EditForm EditContext="editContext" OnValidSubmit="PlaceOrder">
+        <DataAnnotationsValidator />
+
         <div class="checkout-cols">
             <div class="checkout-order-details">
                 <h4>Review order</h4>
@@ -24,7 +27,7 @@
             </div>
         </div>
 
-        <button class="checkout-button btn btn-warning" disabled=@isSubmitting>
+        <button class="checkout-button btn btn-warning" type="submit" disabled=@isError>
             Place order
         </button>
     </EditForm>
@@ -32,21 +35,24 @@
 
 @code {
     Order Order => OrderState.Order;
-    bool isSubmitting;
-    bool isError = false;
+    private EditContext editContext = default!;
+    bool isError = true;
 
-    private async Task CheckSubmission(EditContext editContext)
+    protected override void OnInitialized()
     {
-        isSubmitting = true;
-        var model = editContext.Model as Address;
-        isError = string.IsNullOrWhiteSpace(model?.Name)
-            || string.IsNullOrWhiteSpace(model?.Line1)
-            || string.IsNullOrWhiteSpace(model?.PostalCode);
-        if (!isError)
-        {
-            await PlaceOrder();
-        }
-        isSubmitting = false;
+        editContext = new(Order.DeliveryAddress);
+        editContext.OnFieldChanged += HandleFieldChanged;
+    }
+
+    private void HandleFieldChanged(object? sender, FieldChangedEventArgs e)
+    {
+        isError = !editContext.Validate();
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        editContext.OnFieldChanged -= HandleFieldChanged;
     }
 
     async Task PlaceOrder()
